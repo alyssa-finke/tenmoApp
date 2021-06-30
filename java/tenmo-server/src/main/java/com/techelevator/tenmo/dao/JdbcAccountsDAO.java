@@ -10,13 +10,18 @@ import java.math.BigDecimal;
 public class JdbcAccountsDAO implements AccountsDAO {
 
     private JdbcTemplate jdbcTemplate;
-    Accounts accounts = new Accounts();
+   // Accounts accounts = new Accounts();
+
+    public JdbcAccountsDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
 
     @Override // join user to accounts by userId by username
     public BigDecimal getAccountBalance(int loggedInUserId) {
         String sql = "SELECT balance " +
                 "FROM accounts " +
-                "WHERE user_id LIKE ?;";
+                "WHERE user_id = ?;";
 
             BigDecimal balance = jdbcTemplate.queryForObject(sql, BigDecimal.class, loggedInUserId);
             return balance;

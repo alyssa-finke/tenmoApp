@@ -1,11 +1,9 @@
 package com.techelevator.tenmo.controller;
 
-import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.dao.AccountsDAO;
-import com.techelevator.tenmo.dao.TransfersDAO;
-import com.techelevator.tenmo.model.Accounts;
+import com.techelevator.tenmo.dao.TransferDao;
+import com.techelevator.tenmo.dao.UserDao;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,14 +15,14 @@ import java.security.Principal;
 @PreAuthorize("isAuthenticated()")
 public class AccountsController {
 
-    private JdbcUserDao userDAO;
+    private UserDao userDAO;
     private AccountsDAO accountsDAO;
- //   private TransfersDAO transfersDAO;
+    private TransferDao transferDao;
 
-    public AccountsController(AccountsDAO accountDAO, JdbcUserDao userDAO){ //TransfersDAO transfersDAO) {
+    public AccountsController(AccountsDAO accountDAO, UserDao userDAO, TransferDao transferDao){
         this.accountsDAO = accountDAO;
         this.userDAO = userDAO;
-//        this.transfersDAO = transfersDAO;
+        this.transferDao = transferDao;
     }
 
 
