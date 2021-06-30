@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.security.Principal;
 
 @RestController
+@PreAuthorize("isAuthenticated()")
 public class AccountsController {
 
     private JdbcUserDao userDAO;
@@ -26,11 +27,12 @@ public class AccountsController {
 //        this.transfersDAO = transfersDAO;
     }
 
-    @PreAuthorize("isAuthenticated()")
+
     @RequestMapping(value = "accounts/balance", method = RequestMethod.GET)
-    public BigDecimal getAccountBalance(@PathVariable Principal p) {
-        int id = userDAO.findIdByUsername(p.getName());
-        return accountsDAO.getAccountBalance(id);
+    public BigDecimal getAccountBalance(Principal p) {
+        String loggedInUserName = p.getName();
+        int loggedInUserId = userDAO.findIdByUsername(loggedInUserName);
+        return accountsDAO.getAccountBalance(loggedInUserId);
     }
 
 }
