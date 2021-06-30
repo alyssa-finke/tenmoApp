@@ -25,7 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
  */
 @RestController
 public class AuthenticationController {
-
+// DO we need these in AccountController?
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private UserDao userDao;
