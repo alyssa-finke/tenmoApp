@@ -8,10 +8,10 @@ import java.math.BigDecimal;
 import java.security.Principal;
 
 @Component
-public class JdbcAccountsDAO implements AccountsDAO {
+public class JdbcAccountsDAO implements AccountsDAO { //only logic to talk to database
 
     private JdbcTemplate jdbcTemplate;
-   Accounts accounts = new Accounts();
+  // Accounts accounts = new Accounts();
 
     public JdbcAccountsDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -28,15 +28,9 @@ public class JdbcAccountsDAO implements AccountsDAO {
             return balance;
         }
 
+        //This logic should be somewhere else bc this should only be sql. Put in transfer controller.
     //#4 The senders account balance is decreased by the amount of the transfer.
-    @Override //can't figure out what the setBalance wants below
-    //Do i need to add Principal principal in parameters? If so, add to params in AccountsDAO, too.
-    public void subtractFromAccount(BigDecimal transferAmount, Principal principal) {
-        if(accounts.canTransfer()){
-            String loggedInUserName = principal.getName();
-            accounts.setBalance(getAccountBalance() = accounts.getBalance().subtract(transferAmount);
-        }
-    }
+
 
 //Should be able to make similar method for adding: Add in AccountsDAO then here
 //Should i be doing this here or in JdbcTransferDAO
