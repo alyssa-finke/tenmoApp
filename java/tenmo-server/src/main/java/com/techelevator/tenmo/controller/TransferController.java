@@ -3,13 +3,11 @@ package com.techelevator.tenmo.controller;
 import com.techelevator.tenmo.dao.AccountsDAO;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
-import com.techelevator.tenmo.model.Accounts;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 
@@ -36,11 +34,22 @@ public class TransferController {
     }
 
     @RequestMapping(value = "account/transfer", method = RequestMethod.PUT)
-    public void transferTransaction(@RequestBody Transfer transfer, BigDecimal transferAmount, Principal principal) {
-        if(accounts.canTransfer()){
-            accounts.setBalance(accounts.getBalance().subtract(transferAmount));
-        }
+    public void transferTransaction(@RequestBody Transfer transfer, Principal p) {
+        String loggedInUsername = p.getName();
+        transferDao.createNewTransfer(transfer, loggedInUsername);
     }
+    // mapping for #5 viewTransfers
+    @RequestMapping(value = "account/transfer", method = RequestMethod.GET)
+    public List<Transfer> listMyTransfers(@PathVariable int userId) {
+        return transferDao.listMyTransfers(userId);
+    }
+
+    //mapping for #6 view transfer details
+    @RequestMapping(value = "account/transfer/{id}", method = RequestMethod.GET)
+    public Transfer viewTransferDetails(@PathVariable int transferId) {
+        return transferDao.viewTransferDetails(transferId);
+    }
+}
 
     //get account based on principal
     //create account method within the method
@@ -50,4 +59,4 @@ public class TransferController {
 
 
 
-}
+

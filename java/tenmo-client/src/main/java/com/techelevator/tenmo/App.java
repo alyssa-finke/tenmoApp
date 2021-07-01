@@ -92,8 +92,8 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	private void sendBucks() {
 		// TODO Auto-generated method stub
 		//first print out list
-	System.out.println(accountsService.listAllUsers(user.getUsername()));
-		
+	System.out.println(accountsService.findAllUsers(user.getUsername()));
+		// is only throwing exception and printing error message
 	}
 
 	private void requestBucks() {

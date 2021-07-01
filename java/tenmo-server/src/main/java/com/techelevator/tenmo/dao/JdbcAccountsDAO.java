@@ -1,11 +1,9 @@
 package com.techelevator.tenmo.dao;
 
-import com.techelevator.tenmo.model.Accounts;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.security.Principal;
 
 @Component
 public class JdbcAccountsDAO implements AccountsDAO { //only logic to talk to database
@@ -26,9 +24,15 @@ public class JdbcAccountsDAO implements AccountsDAO { //only logic to talk to da
 
             BigDecimal balance = jdbcTemplate.queryForObject(sql, BigDecimal.class, loggedInUserId);
             return balance;
-        }
 
-        //This logic should be somewhere else bc this should only be sql. Put in transfer controller.
+    }
+
+    @Override
+    public int getAccountId(int userId) {
+        return 0;
+    }
+
+    //This logic should be somewhere else bc this should only be sql. Put in transfer controller.
     //#4 The senders account balance is decreased by the amount of the transfer.
 
 

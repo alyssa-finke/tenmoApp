@@ -2,18 +2,26 @@ package com.techelevator.tenmo.model;
 
 import java.math.BigDecimal;
 
-public class Accounts {
+public class Account {
 
     private int accountId;
     private int userId;
     private BigDecimal balance;
 
-    public Accounts() {
+    public Account() {
     }
-    public Accounts(int accountId, int userId, BigDecimal balance) {
+    public Account(int accountId, int userId, BigDecimal balance) {
         this.accountId = accountId;
         this.userId = userId;
         this.balance = balance;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public int getAccountId() {
@@ -39,6 +47,7 @@ public class Accounts {
         if(balance.compareTo(transfer.getTransferAmount()) == 1); //this is what I found for comparing two BigDecimals
         return true;
     }
+
 
 }
 
