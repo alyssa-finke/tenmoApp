@@ -1,6 +1,7 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountsService;
 import com.techelevator.tenmo.services.AuthenticationService;
@@ -86,8 +87,12 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		
 	}
 
+	User user = new User();
+
 	private void sendBucks() {
 		// TODO Auto-generated method stub
+		//first print out list
+	System.out.println(accountsService.listAllUsers(user.getUsername()));
 		
 	}
 

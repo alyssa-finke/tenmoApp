@@ -56,6 +56,19 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
+    public List<User> findAllUsersTransfer() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT user_id, username " +
+                "FROM users;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        while (results.next()) {
+            User user = mapRowToUserTransfer(results);
+            users.add(user);
+        }
+        return users;
+    }
+
+    @Override
     public boolean create(String username, String password) {
 
         // create user
@@ -86,6 +99,16 @@ public class JdbcUserDao implements UserDao {
         user.setPassword(rs.getString("password_hash"));
         user.setActivated(true);
         user.setAuthorities("USER");
+        return user;
+    }
+
+
+    private User mapRowToUserTransfer(SqlRowSet rs) {
+        User user = new User();
+        user.setId(rs.getLong("user_id"));
+        user.setUsername(rs.getString("username"));
+        // user.setActivated(true);
+        // user.setAuthorities("USER");
         return user;
     }
 }

@@ -1,20 +1,27 @@
 package com.techelevator.tenmo.model;
 
+import java.math.BigDecimal;
+
 public class Transfer {
     private int transferId;
     private int transferType;
     private int transferStatus;
     private int accountFrom;
     private int accountTo;
-    private int transferAmount;
+    private BigDecimal transferAmount;
+    //Changed this from int to BigDecimal bc in table it says amount
 
-    public Transfer(int transferId, int transferType, int transferStatus, int accountFrom, int accountTo, int transferAmount) {
+    public Transfer(int transferId, int transferType, int transferStatus, int accountFrom, int accountTo, BigDecimal transferAmount) {
         this.transferId = transferId;
         this.transferType = transferType;
         this.transferStatus = transferStatus;
         this.accountFrom = accountFrom;
         this.accountTo = accountTo;
         this.transferAmount = transferAmount;
+    }
+    //made this constructor when initializing Transfer in Accounts. Is this okay?
+    public Transfer() {
+
     }
 
     public int getTransferId() {
@@ -37,10 +44,6 @@ public class Transfer {
         return accountTo;
     }
 
-    public int getTransferAmount() {
-        return transferAmount;
-    }
-
     public void setTransferId(int transferId) {
         this.transferId = transferId;
     }
@@ -61,7 +64,11 @@ public class Transfer {
         this.accountTo = accountTo;
     }
 
-    public void setTransferAmount(int transferAmount) {
+    public BigDecimal getTransferAmount() {
+        return transferAmount;
+    }
+
+    public void setTransferAmount(BigDecimal transferAmount) {
         this.transferAmount = transferAmount;
     }
 }
