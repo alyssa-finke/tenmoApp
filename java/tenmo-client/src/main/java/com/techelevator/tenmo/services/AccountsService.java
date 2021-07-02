@@ -31,10 +31,10 @@ public class AccountsService extends BaseService {
         return balance;
     }
 
-    public List<User> findAllUsers(String token) {
-        List<User> users;
+    public User[] findAllUsersTransfer(String token) {
+        User[] users = null;
         try {
-            users = restTemplate.exchange(baseUrl + "users", HttpMethod.GET, makeAuthEntity(token), List.class).getBody();
+            users = restTemplate.exchange(baseUrl + "users", HttpMethod.GET, makeAuthEntity(token), User[].class).getBody();
             // what is going on with the List.class?
         } catch (Exception ex) {
             System.out.println("Cannot print users.");
