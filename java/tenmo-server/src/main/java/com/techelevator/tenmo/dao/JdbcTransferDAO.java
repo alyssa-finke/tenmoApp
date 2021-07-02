@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import javax.print.DocFlavor;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +37,8 @@ public class JdbcTransferDAO implements TransferDao {
         }
         return account;
     }
-
-    private Account creditBalance(Account account) {
+//take in user_id and transfer amount
+    private Account creditBalance(Account account, int accountToUserId, BigDecimal transferAmount) {
         String sql = "UPDATE accounts " +
                 "SET balance = balance + ?" +
                 "WHERE user_id = ?;";
@@ -45,7 +46,7 @@ public class JdbcTransferDAO implements TransferDao {
         return account;
     }
 
-    private Account debitBalance(Account account) {
+    private Account debitBalance(Account account, int userId, BigDecimal transferAmount) {
         String sql = "UPDATE accounts " +
                 "SET balance = balance - ?" +
                 "WHERE user_id = ?;";
@@ -56,12 +57,18 @@ public class JdbcTransferDAO implements TransferDao {
     @Override
     public void createNewTransfer(Transfer transfer, String fromUsername) {
         int userId = userDAO.findIdByUsername(fromUsername);
-        if (accountsDAO.getAccountBalance(userId).compareTo(transfer.getTransferAmount()) == 1) {
-            String sql = "INSERT transfer_type_id, transfer_status_id, account_from, account_to, amount " +
-                    "VALUES (?, 2, ?, ?, ?);";
-            jdbcTemplate.update(sql, transfer);
-            creditBalance(getAccountByUserId(transfer.getAccountFrom()));
-            debitBalance(getAccountByUserId(transfer.getAccountFrom()));
+       int accountId = accountsDAO.getAccountId(userId);
+        BigDecimal transferAmount = transfer.getTransferAmount();
+        BigDecimal accountBalance = accountsDAO.getAccountBalance(userId);
+        int accountToUserId = transfer.getAccountTo();
+        int accountToAccountId = accountsDAO.getAccountId(accountToUserId);
+       // if (accountsDAO.getAccountBalance(userId).compareTo(transfer.getTransferAmount()) == 1) { THIS IS WHAT WE HAD, BUT I THINK BELOW IS RIGHT.
+        if (accountBalance.compareTo(transferAmount) == 1) {
+            String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
+                    "VALUES (?, ?, ?, ?, ?);";
+            jdbcTemplate.update(sql, transfer.getTransferType(), transfer.getTransferStatus(), accountId, accountToAccountId, transfer.getTransferAmount());
+            jdbcTemplate.update(sql, creditBalance(creditBalance(accountToAccountId, transfer.getTransferId())));
+            debitBalance(accountsDAO.setBalance);
         //    jdbcTemplate.update(sql, debitBalance(getAccountByUserId(transfer.getAccountFrom())));
         //    jdbcTemplate.update(sql, creditBalance(getAccountByUserId(transfer.getAccountTo())));
         }

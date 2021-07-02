@@ -42,13 +42,4 @@ public class Account {
 
     Transfer transfer = new Transfer();
 
-    //#5 I can't send more TE Bucks than I have in my account.
-    public boolean canTransfer(){
-        if(balance.compareTo(transfer.getTransferAmount()) == 1); //this is what I found for comparing two BigDecimals
-        return true;
-    }
-
-
 }
-
-//add a tranfer method to this that adds true or false if it's allowed

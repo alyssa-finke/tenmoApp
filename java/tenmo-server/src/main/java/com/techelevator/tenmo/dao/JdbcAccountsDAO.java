@@ -29,7 +29,11 @@ public class JdbcAccountsDAO implements AccountsDAO { //only logic to talk to da
 
     @Override
     public int getAccountId(int userId) {
-        return 0;
+        String sql = "SELECT account_id " +
+                "FROM accounts " +
+                "WHERE user_id = ?;";
+        int accountId = jdbcTemplate.queryForObject(sql, Integer.class, userId);
+        return accountId;
     }
 
     //This logic should be somewhere else bc this should only be sql. Put in transfer controller.

@@ -32,7 +32,7 @@ public class TransferController {
         return userDao.findAllUsersTransfer();
 
     }
-
+//put in a breakpoint and find out why it's null here
     @RequestMapping(value = "account/transfer", method = RequestMethod.PUT)
     public void transferTransaction(@RequestBody Transfer transfer, Principal p) {
         String loggedInUsername = p.getName();
