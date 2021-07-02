@@ -30,8 +30,8 @@ public class JdbcTransferDAO implements TransferDao {
     public Account getAccountByUserId(int userId) {
         Account account = null;
         String sql = "SELECT account_id, user_id, balance " +
-                "FROM account WHERE user_id = ?;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+                "FROM accounts WHERE user_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
         while (results.next()) {
             account = mapRowToAccount(results);
         }
@@ -42,7 +42,7 @@ public class JdbcTransferDAO implements TransferDao {
         String sql = "UPDATE accounts " +
                 "SET balance = balance + ?" +
                 "WHERE user_id = ?;";
-        jdbcTemplate.update(sql, account.getBalance(), account.getUserId());
+        jdbcTemplate.update(sql, transferAmount, account.getUserId());
         return account;
     }
 
@@ -50,7 +50,7 @@ public class JdbcTransferDAO implements TransferDao {
         String sql = "UPDATE accounts " +
                 "SET balance = balance - ?" +
                 "WHERE user_id = ?;";
-        jdbcTemplate.update(sql, account.getBalance(), account.getUserId());
+        jdbcTemplate.update(sql, transferAmount, account.getUserId());
         return account;
     }
 
@@ -62,14 +62,15 @@ public class JdbcTransferDAO implements TransferDao {
         BigDecimal accountBalance = accountsDAO.getAccountBalance(userId);
         int accountToUserId = transfer.getAccountTo();
         int accountToAccountId = accountsDAO.getAccountId(accountToUserId);
-       // if (accountsDAO.getAccountBalance(userId).compareTo(transfer.getTransferAmount()) == 1) { THIS IS WHAT WE HAD, BUT I THINK BELOW IS RIGHT.
         if (accountBalance.compareTo(transferAmount) == 1) {
             String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
                     "VALUES (?, ?, ?, ?, ?);";
             jdbcTemplate.update(sql, transfer.getTransferType(), transfer.getTransferStatus(), accountId, accountToAccountId, transfer.getTransferAmount());
-            jdbcTemplate.update(sql, creditBalance(creditBalance(accountToAccountId, transfer.getTransferId())));
-            debitBalance(accountsDAO.setBalance);
-        //    jdbcTemplate.update(sql, debitBalance(getAccountByUserId(transfer.getAccountFrom())));
+            creditBalance(getAccountByUserId(transfer.getAccountTo()), accountToUserId, transferAmount); //
+            debitBalance(getAccountByUserId(transfer.getAccountFrom()), userId, transferAmount);
+
+
+            //    jdbcTemplate.update(sql, debitBalance(getAccountByUserId(transfer.getAccountFrom())));
         //    jdbcTemplate.update(sql, creditBalance(getAccountByUserId(transfer.getAccountTo())));
         }
     }
@@ -93,8 +94,8 @@ public class JdbcTransferDAO implements TransferDao {
     @Override
     public Transfer viewTransferDetails(int transferId) {
         Transfer transferDetails = null;
-        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount" +
-                "fROm TRANSFERS" +
+        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount " +
+                "FROM transfers " +
                 "WHERE transfer_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
         if(results.next()) {
