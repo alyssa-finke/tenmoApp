@@ -3,24 +3,15 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.BaseService;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.http.HttpMethod;
-<<<<<<< HEAD
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-=======
-import org.springframework.web.client.RestClientResponseException;
-import org.springframework.web.client.RestTemplate;
-
-import java.math.BigDecimal;
-import java.util.Random;
->>>>>>> 6da26938dcda08f65dbee55ba960638299078a21
 
 public class TransferService extends BaseService {
 
     private String baseUrl;
     private RestTemplate restTemplate = new RestTemplate();
 
-<<<<<<< HEAD
     public TransferService(String url){
         this.baseUrl = url;
     }
@@ -37,22 +28,7 @@ public class TransferService extends BaseService {
     }
 
 }
-=======
-    public TransferService(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
 
-    public void sendMoney(String token, BigDecimal transferAmount) {
-        try {
-            restTemplate.put(baseUrl + "transfer", HttpMethod.PUT, makeAuthEntity(token));
-        } catch (RestClientResponseException ex) {
-        }
-
-    }
-
-
-
-}
 
 
 /*
@@ -83,4 +59,3 @@ private Transfer makeTransfer(String CSV) {
                 Integer.parseInt(parsed[5].trim()));
     }
  */
->>>>>>> 6da26938dcda08f65dbee55ba960638299078a21
