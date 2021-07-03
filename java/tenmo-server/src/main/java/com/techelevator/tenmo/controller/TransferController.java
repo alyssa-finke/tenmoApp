@@ -26,36 +26,38 @@ public class TransferController {
         this.accountsDAO = accountsDAO;
     }
 
-
+    //View all users
     @RequestMapping(value = "users", method = RequestMethod.GET)
     public List<User> findAllUsers() {
         return userDao.findAllUsersTransfer();
 
     }
-//put in a breakpoint and find out why it's null here
+
+    //Transfer money
     @RequestMapping(value = "account/transfer", method = RequestMethod.PUT)
     public void transferTransaction(@RequestBody Transfer transfer, Principal p) {
         String loggedInUsername = p.getName();
         transferDao.createNewTransfer(transfer, loggedInUsername);
     }
-    // mapping for #5 viewTransfers
+
+    // mapping for #5 viewTransfers// Switched params from userId to loggedInUserId
     @RequestMapping(value = "account/transfer", method = RequestMethod.GET)
-    public List<Transfer> listMyTransfers(@PathVariable int userId) {
-        return transferDao.listMyTransfers(userId);
+    public List<Transfer> listMyTransfers(Principal p) {
+        String loggedInUserName = p.getName();
+        int loggedInUserId = userDao.findIdByUsername(loggedInUserName);
+        return transferDao.listMyTransfers(loggedInUserId);
     }
 
-    //mapping for #6 view transfer details
+
+    //mapping for #6 view transfer details//first param matches id and added principal for authentication
     @RequestMapping(value = "account/transfer/{id}", method = RequestMethod.GET)
-    public Transfer viewTransferDetails(@PathVariable int transferId) {
-        return transferDao.viewTransferDetails(transferId);
+    public Transfer viewTransferDetails(@PathVariable int id, Principal p) {
+        String loggedInUserName = p.getName();
+        int loggedInUserId = userDao.findIdByUsername(loggedInUserName);
+        return transferDao.viewTransferDetails(id);
     }
+
 }
-
-    //get account based on principal
-    //create account method within the method
-
-     //can't figure out what the setBalance wants below
-    //Do i need to add Principal principal in parameters? If so, add to params in AccountsDAO, too.
 
 
 

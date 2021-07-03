@@ -1,8 +1,11 @@
 package com.techelevator.tenmo.model;
 
+import io.cucumber.java.sl.In;
+
 import java.math.BigDecimal;
 
 public class Transfer {
+
     private int transferId;
     private int transferType;
     private int transferStatus;
@@ -17,10 +20,6 @@ public class Transfer {
         this.accountFrom = accountFrom;
         this.accountTo = accountTo;
         this.transferAmount = transferAmount;
-    }
-    //made this constructor when initializing Transfer in Accounts. Is this okay?
-    public Transfer() {
-
     }
 
     public int getTransferId() {
@@ -43,6 +42,10 @@ public class Transfer {
         return accountTo;
     }
 
+    public BigDecimal getTransferAmount() {
+        return transferAmount;
+    }
+
     public void setTransferId(int transferId) {
         this.transferId = transferId;
     }
@@ -61,10 +64,6 @@ public class Transfer {
 
     public void setAccountTo(int accountTo) {
         this.accountTo = accountTo;
-    }
-
-    public BigDecimal getTransferAmount() {
-        return transferAmount;
     }
 
     public void setTransferAmount(BigDecimal transferAmount) {

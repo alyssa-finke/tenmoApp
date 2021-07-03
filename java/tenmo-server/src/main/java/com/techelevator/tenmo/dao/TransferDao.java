@@ -15,7 +15,7 @@ public interface TransferDao {
 
     List<Transfer> listMyTransfers(int userId);
 
-    Transfer viewTransferDetails(int transferId);
+    Transfer viewTransferDetails(int id);
 
 
 

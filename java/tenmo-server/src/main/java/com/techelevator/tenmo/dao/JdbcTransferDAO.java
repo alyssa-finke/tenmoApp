@@ -2,12 +2,10 @@ package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
-import com.techelevator.tenmo.model.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
-import javax.print.DocFlavor;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,15 +72,15 @@ public class JdbcTransferDAO implements TransferDao {
         //    jdbcTemplate.update(sql, creditBalance(getAccountByUserId(transfer.getAccountTo())));
         }
     }
-        // #5 see all transfers ive sent or received
+        // #5 see all transfers ive sent or received// now using loggedInUserId as param here
     @Override
-    public List<Transfer> listMyTransfers(int userId){
+    public List<Transfer> listMyTransfers(int loggedInUserId){
         List<Transfer> transfers = new ArrayList<>();
-        String sql = "SELECT transfer_id, account_from, account_to, amount " +
+        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount " +
                 "FROM transfers " +
                 "JOIN accounts ON transfers.account_from = accounts.account_id " +
                 "WHERE user_id = ?;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, loggedInUserId);
         while (results.next()) {
             Transfer transfer = mapRowToListMyTransfers(results);
             transfers.add(transfer);
@@ -97,7 +95,7 @@ public class JdbcTransferDAO implements TransferDao {
         String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount " +
                 "FROM transfers " +
                 "WHERE transfer_id = ?;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId); //needed to add transferId here
         if(results.next()) {
             transferDetails = mapRowToViewTransferDetails(results);
         }
@@ -112,10 +110,12 @@ public class JdbcTransferDAO implements TransferDao {
         account.setBalance(rs.getBigDecimal("balance"));
         return account;
     }
-        //made this map for viewTransfers method
+        //made this map for viewTransfers method//added transfer type id and transfer status id so they would map
     private Transfer mapRowToListMyTransfers(SqlRowSet rs) {
         Transfer transfer = new Transfer();
         transfer.setTransferId(rs.getInt("transfer_id"));
+        transfer.setTransferType(rs.getInt("transfer_type_id"));
+        transfer.setTransferStatus(rs.getInt("transfer_status_id"));
         transfer.setAccountFrom(rs.getInt("account_from"));
         transfer.setAccountTo(rs.getInt("account_to"));
         transfer.setTransferAmount(rs.getBigDecimal("amount"));
@@ -133,11 +133,7 @@ public class JdbcTransferDAO implements TransferDao {
     }
 
 
-//do i have the money to tranfer? if so, subtract from mine, add to yours, and insert a row into transfer
-//run sql insert into database
-//create 1 method to insert transfer
-//1 method to update account balances
-//then call for both
+
 
 //client should just create a request
 

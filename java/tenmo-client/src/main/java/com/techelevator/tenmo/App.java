@@ -1,12 +1,16 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountsService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.AuthenticationServiceException;
+import com.techelevator.tenmo.services.TransferService;
 import com.techelevator.view.ConsoleService;
+
+import java.util.Scanner;
 
 public class App {
 
@@ -28,16 +32,18 @@ private static final String API_BASE_URL = "http://localhost:8080/";
     private ConsoleService console;
     private AuthenticationService authenticationService;
     private AccountsService accountsService;
+    private TransferService transferService;
 
     public static void main(String[] args) {
-    	App app = new App(new ConsoleService(System.in, System.out), new AuthenticationService(API_BASE_URL), new AccountsService(API_BASE_URL));
+    	App app = new App(new ConsoleService(System.in, System.out), new AuthenticationService(API_BASE_URL), new AccountsService(API_BASE_URL), new TransferService(API_BASE_URL));
     	app.run();
     }
 
-    public App(ConsoleService console, AuthenticationService authenticationService, AccountsService accountsService) {
+    public App(ConsoleService console, AuthenticationService authenticationService, AccountsService accountsService, TransferService transferService) {
 		this.console = console;
 		this.authenticationService = authenticationService;
 		this.accountsService = accountsService;
+		this.transferService = transferService;
 	}
 
 	public void run() {
@@ -71,32 +77,55 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		}
 	}
 
-	private void viewCurrentBalance() {
-		// TODO Auto-generated method stub
-		System.out.println("Your current account balance is: $" + accountsService.getAccountBalance(currentUser.getToken()));
-		
+	private void viewPendingRequests() {
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
-		
+		System.out.println(transferService.listAllTransfers(currentUser.getToken()));
+
+
 	}
 
-	private void viewPendingRequests() {
+	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
-		
+		System.out.println("Your current account balance is: $" + accountsService.getAccountBalance(currentUser.getToken()));
+
 	}
 
 	User user = new User();
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
-		//first print out list
-	System.out.println(accountsService.findAllUsers(user.getUsername()));
-		// is only throwing exception and printing error message
-	}
+			// TODO Auto-generated method
+			Scanner scanner = new Scanner(System.in);
+			int selectId;
+			int moneyToSend;
 
-	private void requestBucks() {
+			for ( User user : accountsService.findAllUsersTransfer(currentUser.getToken())) {
+				System.out.println(user.getId() + " : " + user.getUsername());
+			}
+			System.out.println("\nEnter ID of user you are sending to (0 to cancel):");
+
+			if (scanner.hasNextInt()) {
+				selectId = scanner.nextInt();
+				scanner.nextLine();
+				/// if menuSelection = userId then that becomes accountToUserId
+				//then input $ becomes transferAmount
+			} else {
+				selectId = 9999;
+			}
+			System.out.println("\nEnter amount:");
+			if (scanner.hasNextInt()) {
+				moneyToSend = scanner.nextInt();
+				scanner.nextLine();
+				/// if menuSelection = userId then that becomes accountToUserId
+				//then input $ becomes transferAmount
+			} else {
+				moneyToSend = 999;
+			}
+
+		}
+
+		private void requestBucks() {
 		// TODO Auto-generated method stub
 		
 	}

@@ -36,11 +36,6 @@ public class JdbcAccountsDAO implements AccountsDAO { //only logic to talk to da
         return accountId;
     }
 
-    //This logic should be somewhere else bc this should only be sql. Put in transfer controller.
-    //#4 The senders account balance is decreased by the amount of the transfer.
 
 
-//Should be able to make similar method for adding: Add in AccountsDAO then here
-//Should i be doing this here or in JdbcTransferDAO
-    //Sql strings transfer from and transfer to
 }
