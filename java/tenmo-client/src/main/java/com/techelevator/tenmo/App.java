@@ -10,6 +10,12 @@ import com.techelevator.tenmo.services.AuthenticationServiceException;
 import com.techelevator.tenmo.services.TransferService;
 import com.techelevator.view.ConsoleService;
 
+<<<<<<< HEAD
+=======
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+>>>>>>> 6da26938dcda08f65dbee55ba960638299078a21
 import java.util.Scanner;
 
 public class App {
@@ -33,6 +39,8 @@ private static final String API_BASE_URL = "http://localhost:8080/";
     private AuthenticationService authenticationService;
     private AccountsService accountsService;
     private TransferService transferService;
+
+
 
     public static void main(String[] args) {
     	App app = new App(new ConsoleService(System.in, System.out), new AuthenticationService(API_BASE_URL), new AccountsService(API_BASE_URL), new TransferService(API_BASE_URL));
@@ -92,9 +100,10 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 	}
 
-	User user = new User();
+
 
 	private void sendBucks() {
+<<<<<<< HEAD
 			// TODO Auto-generated method
 			Scanner scanner = new Scanner(System.in);
 			int selectId;
@@ -124,6 +133,39 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 			}
 
 		}
+=======
+        // TODO Auto-generated method
+        Scanner scanner = new Scanner(System.in);
+        int selectId;
+        int moneyToSend;
+
+        for ( User user : accountsService.findAllUsersTransfer(currentUser.getToken())) {
+        	System.out.println(user.getId() + " : " + user.getUsername());
+		}
+        System.out.println("\nEnter ID of user you are sending to (0 to cancel):");
+
+        if (scanner.hasNextInt()) {
+			selectId = scanner.nextInt();
+            scanner.nextLine();
+            /// if menuSelection = userId then that becomes accountToUserId
+			//then input $ becomes transferAmount
+        } else {
+			selectId = 9999;
+        }
+		System.out.println("\nEnter amount:");
+		if (scanner.hasNextInt()) {
+			moneyToSend = scanner.nextInt();
+			scanner.nextLine();
+			/// if menuSelection = userId then that becomes accountToUserId
+			//then input $ becomes transferAmount
+		} else {
+			moneyToSend = 999;
+		}
+
+    }
+
+
+>>>>>>> 6da26938dcda08f65dbee55ba960638299078a21
 
 		private void requestBucks() {
 		// TODO Auto-generated method stub
