@@ -35,7 +35,6 @@ public class AccountsService extends BaseService {
         User[] users = null;
         try {
             users = restTemplate.exchange(baseUrl + "users", HttpMethod.GET, makeAuthEntity(token), User[].class).getBody();
-            // what is going on with the List.class?
         } catch (Exception ex) {
             System.out.println("Cannot print users.");
             return null;

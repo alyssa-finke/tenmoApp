@@ -62,7 +62,7 @@ public class JdbcTransferDAO implements TransferDao {
         int accountToAccountId = accountsDAO.getAccountId(accountToUserId);
         if (accountBalance.compareTo(transferAmount) == 1) {
             String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
-                    "VALUES (?, ?, ?, ?, ?);";
+                    "VALUES (?, ?, ?, ?, ?);"; //hard code first two if need to
             jdbcTemplate.update(sql, transfer.getTransferType(), transfer.getTransferStatus(), accountId, accountToAccountId, transfer.getTransferAmount());
             creditBalance(getAccountByUserId(transfer.getAccountTo()), accountToUserId, transferAmount); //
             debitBalance(getAccountByUserId(transfer.getAccountFrom()), userId, transferAmount);

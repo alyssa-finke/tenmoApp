@@ -22,6 +22,12 @@ public class Transfer {
         this.transferAmount = transferAmount;
     }
 
+    public Transfer() {
+    }
+
+    public Transfer(int selectId, BigDecimal moneyToSend) {
+    }
+
     public int getTransferId() {
         return transferId;
     }

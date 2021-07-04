@@ -2,9 +2,14 @@ package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.BaseService;
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class TransferService extends BaseService {
@@ -16,16 +21,47 @@ public class TransferService extends BaseService {
         this.baseUrl = url;
     }
 
-    public List<Transfer> listAllTransfers(String token) {
-        List<Transfer> transfers;
+
+//Switched this to an array instead of a list, like was done for users.
+    public Transfer[] listAllTransfers(String token) {
+        Transfer[] transfers = null;
         try {
-            transfers = restTemplate.exchange(baseUrl + "account/transfer", HttpMethod.GET, makeAuthEntity(token), List.class).getBody();
+            transfers = restTemplate.exchange(baseUrl + "account/transfer", HttpMethod.GET, makeAuthEntity(token), Transfer[].class).getBody();
         } catch (Exception ex) {
-            System.out.println("Cannot print transfers.");
+            System.out.println("Cannot print users.");
             return null;
         }
         return transfers;
+
     }
+
+//account/transfer OR account/transfer/{id} Should it be going to the userId or accountId?
+    //do I need to be sure I've connected accounts to transfers?
+    public Transfer createNewTransfer(int selectId, BigDecimal moneyToSend, String token) {
+        Transfer transfer = new Transfer(selectId, moneyToSend);// pass in selectId and moneyToSend
+        //may need to make extra constructor
+        try{
+            transfer = restTemplate.exchange(baseUrl + "account/transfer", HttpMethod.PUT, makeTransferEntity(token, transfer), Transfer.class).getBody();//add transfer entity. won't need makeauthentity(token)
+        } catch (Exception ex) {
+            System.out.println("Cannot make new transfer.");
+            return null;
+        } return transfer;
+    }
+
+    //added this
+    private HttpEntity makeTransferEntity(String token, Transfer transfer) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
+        HttpEntity entity = new HttpEntity(transfer, headers);
+        return entity;
+    }
+
+
+
+//Is how this working is that the app calls the method above, this request is recognized by server bc of url and httpmethod,
+    //and from there it knows what to do?
+
 
 }
 
