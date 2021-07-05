@@ -36,20 +36,20 @@ public class JdbcTransferDAO implements TransferDao {
         return account;
     }
 //take in user_id and transfer amount
-    private Account creditBalance(Account account, int accountToUserId, BigDecimal transferAmount) {
+    private void creditBalance(Account account, int accountToUserId, BigDecimal transferAmount) {
         String sql = "UPDATE accounts " +
                 "SET balance = balance + ?" +
                 "WHERE user_id = ?;";
         jdbcTemplate.update(sql, transferAmount, account.getUserId());
-        return account;
+
     }
 
-    private Account debitBalance(Account account, int userId, BigDecimal transferAmount) {
+    private void debitBalance(int accountFrom, BigDecimal transferAmount) {
         String sql = "UPDATE accounts " +
                 "SET balance = balance - ?" +
-                "WHERE user_id = ?;";
-        jdbcTemplate.update(sql, transferAmount, account.getUserId());
-        return account;
+                "WHERE account_id = ?;";
+        jdbcTemplate.update(sql, accountFrom, transferAmount);
+
     }
 
     @Override
@@ -58,14 +58,14 @@ public class JdbcTransferDAO implements TransferDao {
        int accountId = accountsDAO.getAccountId(userId);
         BigDecimal transferAmount = transfer.getTransferAmount();
         BigDecimal accountBalance = accountsDAO.getAccountBalance(userId);
-        int accountToUserId = transfer.getAccountTo();
+        int accountToUserId = transfer.getUserTo();
         int accountToAccountId = accountsDAO.getAccountId(accountToUserId);
         if (accountBalance.compareTo(transferAmount) == 1) {
             String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
-                    "VALUES (?, ?, ?, ?, ?);"; //hard code first two if need to
-            jdbcTemplate.update(sql, transfer.getTransferType(), transfer.getTransferStatus(), accountId, accountToAccountId, transfer.getTransferAmount());
-            creditBalance(getAccountByUserId(transfer.getAccountTo()), accountToUserId, transferAmount); //
-            debitBalance(getAccountByUserId(transfer.getAccountFrom()), userId, transferAmount);
+                    "VALUES (1, 2, ?, ?, ?);"; //hard code first two if need to
+            jdbcTemplate.update(sql, accountId, accountToAccountId, transfer.getTransferAmount());
+            creditBalance(getAccountByUserId(transfer.getUserTo()), accountToUserId, transferAmount); //
+            debitBalance(transfer.getAccountFrom(), transferAmount);
 
 
             //    jdbcTemplate.update(sql, debitBalance(getAccountByUserId(transfer.getAccountFrom())));

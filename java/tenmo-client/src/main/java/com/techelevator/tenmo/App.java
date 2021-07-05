@@ -11,6 +11,7 @@ import com.techelevator.tenmo.services.TransferService;
 import com.techelevator.view.ConsoleService;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.Scanner;
 
 public class App {
@@ -87,10 +88,10 @@ public class App {
 		//Created this just like we used to list users
 		System.out.println("--------------------------------------------");
 		System.out.println("Transfer : From : To : Amount");
-		System.out.println("ID : From : To : Amount");
+		System.out.println("ID : ");
 		System.out.println("--------------------------------------------");
 		for (Transfer transfer: transferService.listAllTransfers(currentUser.getToken())){
-			System.out.println(transfer.getTransferId() + " : " + transfer.getAccountFrom() + " : " + transfer.getAccountTo() + " : " + transfer.getTransferAmount());
+			System.out.println(transfer.getTransferId() + " : " + transfer.getAccountFrom() + " : " + transfer.getUserTo() + " : " + transfer.getTransferAmount());
 		}
 
 	}
@@ -105,36 +106,40 @@ public class App {
 
 	private void sendBucks() {
 		// TODO Auto-generated method
+
 		Scanner scanner = new Scanner(System.in);
-		int selectId;
-		BigDecimal moneyToSend;
+		int userTo;
+		BigDecimal transferAmount;
+
 		System.out.println("--------------------------------------------");
 		System.out.println("User ID : Name");
 		System.out.println("--------------------------------------------");
 		for ( User user : accountsService.findAllUsersTransfer(currentUser.getToken())) {
 			System.out.println(user.getId() + " : " + user.getUsername());
 		}
+
 		System.out.println("\nEnter ID of user you are sending to (0 to cancel):");
 
 		if (scanner.hasNextInt()) {
-			selectId = scanner.nextInt();
+			userTo = scanner.nextInt();
 			scanner.nextLine();
-			transfer.setAccountTo(selectId);
+			transfer.setUserTo(userTo);
 
 		} else {
-			selectId = 9999;
+			userTo = 0;
 		}
 		System.out.println("\nEnter amount:");
 		if (scanner.hasNextBigDecimal()) {
-			moneyToSend = scanner.nextBigDecimal();
+			transferAmount = scanner.nextBigDecimal();
 			scanner.nextLine();
-			transfer.setTransferAmount(moneyToSend);
-			transferService.createNewTransfer(selectId, moneyToSend, currentUser.getToken());//Call method to transfer
+			transfer.setTransferAmount(transferAmount);
+
+			transferService.createNewTransfer(userTo, transferAmount, currentUser.getToken());//Call method to transfer
 
 			/// if menuSelection = userId then that becomes accountToUserId
 			//then input $ becomes transferAmount
 		} else {
-			moneyToSend = BigDecimal.valueOf(999);
+			transferAmount = BigDecimal.valueOf(0);
 		}
 
 	}

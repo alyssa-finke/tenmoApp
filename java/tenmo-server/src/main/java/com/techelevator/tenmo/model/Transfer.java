@@ -7,20 +7,20 @@ public class Transfer {
     private int transferType;
     private int transferStatus;
     private int accountFrom;
+    private int userTo;
     private int accountTo;
     private BigDecimal transferAmount;
 
-    public Transfer(int transferId, int transferType, int transferStatus, int accountFrom, int accountTo, BigDecimal transferAmount) {
-        this.transferId = transferId;
-        this.transferType = transferType;
-        this.transferStatus = transferStatus;
-        this.accountFrom = accountFrom;
-        this.accountTo = accountTo;
-        this.transferAmount = transferAmount;
-    }
     //made this constructor when initializing Transfer in Accounts. Is this okay?
     public Transfer() {
+    }
 
+    public int getAccountTo() {
+        return accountTo;
+    }
+
+    public void setAccountTo(int accountTo) {
+        this.accountTo = accountTo;
     }
 
     public int getTransferId() {
@@ -39,8 +39,8 @@ public class Transfer {
         return accountFrom;
     }
 
-    public int getAccountTo() {
-        return accountTo;
+    public int getUserTo() {
+        return userTo;
     }
 
     public void setTransferId(int transferId) {
@@ -59,8 +59,8 @@ public class Transfer {
         this.accountFrom = accountFrom;
     }
 
-    public void setAccountTo(int accountTo) {
-        this.accountTo = accountTo;
+    public void setUserTo(int userTo) {
+        this.userTo = userTo;
     }
 
     public BigDecimal getTransferAmount() {

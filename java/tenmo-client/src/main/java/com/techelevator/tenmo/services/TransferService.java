@@ -35,10 +35,10 @@ public class TransferService extends BaseService {
 
     }
 
-//account/transfer OR account/transfer/{id} Should it be going to the userId or accountId?
+//account/transfer OR account/transfer/{id} Should it be going to the userId or accountId?2
     //do I need to be sure I've connected accounts to transfers?
-    public Transfer createNewTransfer(int selectId, BigDecimal moneyToSend, String token) {
-        Transfer transfer = new Transfer(selectId, moneyToSend);// pass in selectId and moneyToSend
+    public Transfer createNewTransfer(int userTo, BigDecimal transferAmount, String token) {
+        Transfer transfer = new Transfer(userTo, transferAmount);// pass in accountTo and transferAmount
         //may need to make extra constructor
         try{
             transfer = restTemplate.exchange(baseUrl + "account/transfer", HttpMethod.PUT, makeTransferEntity(token, transfer), Transfer.class).getBody();//add transfer entity. won't need makeauthentity(token)
