@@ -40,7 +40,7 @@ public class TransferController {
         transferDao.createNewTransfer(transfer, loggedInUsername);
     }
 
-    // mapping for #5 viewTransfers// Switched params from userId to loggedInUserId
+    // mapping for #5 viewTransfers
     @RequestMapping(value = "account/transfer", method = RequestMethod.GET)
     public List<Transfer> listMyTransfers(Principal p) {
         String loggedInUserName = p.getName();
@@ -49,7 +49,7 @@ public class TransferController {
     }
 
 
-    //mapping for #6 view transfer details//first param matches id and added principal for authentication
+    //mapping for #6 view transfer details
     @RequestMapping(value = "account/transfer/{id}", method = RequestMethod.GET)
     public Transfer viewTransferDetails(@PathVariable int id, Principal p) {
         String loggedInUserName = p.getName();

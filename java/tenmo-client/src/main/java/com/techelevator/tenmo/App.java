@@ -73,7 +73,6 @@ public class App {
 			} else if(MAIN_MENU_OPTION_LOGIN.equals(choice)) {
 				login();
 			} else {
-				// the only other option on the main menu is to exit
 				exitProgram();
 			}
 		}
@@ -81,11 +80,9 @@ public class App {
 
 	private void viewPendingRequests() {
 	}
-
+	//can retrieve info with account ids still working on formatting
 	Transfer transfer = new Transfer();
 	private void viewTransferHistory() {
-		//This prints correctly, just format in a better way
-		//Created this just like we used to list users
 		System.out.println("--------------------------------------------");
 		System.out.println("Transfer : From : To : Amount");
 		System.out.println("ID : ");
@@ -99,10 +96,9 @@ public class App {
 	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
 		System.out.println("Your current account balance is: $" + accountsService.getAccountBalance(currentUser.getToken()));
-
 	}
 
-	User user = new User(); //declare inside method
+	User user = new User();
 
 	private void sendBucks() {
 		// TODO Auto-generated method
@@ -134,10 +130,7 @@ public class App {
 			scanner.nextLine();
 			transfer.setTransferAmount(transferAmount);
 
-			transferService.createNewTransfer(userTo, transferAmount, currentUser.getToken());//Call method to transfer
-
-			/// if menuSelection = userId then that becomes accountToUserId
-			//then input $ becomes transferAmount
+			transferService.createNewTransfer(userTo, transferAmount, currentUser.getToken());
 		} else {
 			transferAmount = BigDecimal.valueOf(0);
 		}
@@ -161,7 +154,6 @@ public class App {
 			} else if (LOGIN_MENU_OPTION_REGISTER.equals(choice)) {
 				register();
 			} else {
-				// the only other option on the login menu is to exit
 				exitProgram();
 			}
 		}
@@ -174,7 +166,7 @@ public class App {
 	private void register() {
 		System.out.println("Please register a new user account");
 		boolean isRegistered = false;
-		while (!isRegistered) //will keep looping until user is registered
+		while (!isRegistered)
 		{
 			UserCredentials credentials = collectUserCredentials();
 			try {
@@ -191,7 +183,7 @@ public class App {
 	private void login() {
 		System.out.println("Please log in");
 		currentUser = null;
-		while (currentUser == null) //will keep looping until user is logged in
+		while (currentUser == null)
 		{
 			UserCredentials credentials = collectUserCredentials();
 			try {

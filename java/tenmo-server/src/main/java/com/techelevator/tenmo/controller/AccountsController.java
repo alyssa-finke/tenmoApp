@@ -25,7 +25,7 @@ public class AccountsController {
         this.transferDao = transferDao;
     }
 
-
+    //Mapping to see account balance for logged in user
     @RequestMapping(value = "accounts/balance", method = RequestMethod.GET)
     public BigDecimal getAccountBalance(Principal p) {
         String loggedInUserName = p.getName();

@@ -19,7 +19,7 @@ public class AccountsService extends BaseService {
         this.baseUrl = url;
     } //is this constructor/dependency injection right?
 
-
+    //get account balance request for logged in user
     public BigDecimal getAccountBalance(String token) {
         BigDecimal balance = null;
         try {
@@ -30,7 +30,7 @@ public class AccountsService extends BaseService {
         }
         return balance;
     }
-
+    //request to get list of all users
     public User[] findAllUsersTransfer(String token) {
         User[] users = null;
         try {

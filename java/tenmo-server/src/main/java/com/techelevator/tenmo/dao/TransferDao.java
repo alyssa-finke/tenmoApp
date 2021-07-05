@@ -11,7 +11,6 @@ public interface TransferDao {
     Account getAccountByUserId(int userId);
 
     void createNewTransfer(Transfer transfer, String fromUsername);
-// will need to create a new transfer map to add to DB
 
     List<Transfer> listMyTransfers(int userId);
 

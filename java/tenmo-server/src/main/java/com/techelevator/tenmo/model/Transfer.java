@@ -11,9 +11,8 @@ public class Transfer {
     private int accountTo;
     private BigDecimal transferAmount;
 
-    //made this constructor when initializing Transfer in Accounts. Is this okay?
-    public Transfer() {
-    }
+
+    public Transfer() {}
 
     public int getAccountTo() {
         return accountTo;

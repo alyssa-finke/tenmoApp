@@ -6,17 +6,17 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 @Component
-public class JdbcAccountsDAO implements AccountsDAO { //only logic to talk to database
+public class JdbcAccountsDAO implements AccountsDAO {
 
     private JdbcTemplate jdbcTemplate;
-  // Accounts accounts = new Accounts();
 
     public JdbcAccountsDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
 
-    @Override // join user to accounts by userId by username
+    //SQL statement to get account balance
+    @Override
     public BigDecimal getAccountBalance(int loggedInUserId) {
         String sql = "SELECT balance " +
                 "FROM accounts " +
