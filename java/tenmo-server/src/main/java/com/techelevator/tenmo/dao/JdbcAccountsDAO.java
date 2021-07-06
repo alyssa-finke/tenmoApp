@@ -22,8 +22,8 @@ public class JdbcAccountsDAO implements AccountsDAO {
                 "FROM accounts " +
                 "WHERE user_id = ?;";
 
-            BigDecimal balance = jdbcTemplate.queryForObject(sql, BigDecimal.class, loggedInUserId);
-            return balance;
+        BigDecimal balance = jdbcTemplate.queryForObject(sql, BigDecimal.class, loggedInUserId);
+        return balance;
 
     }
 
@@ -35,7 +35,6 @@ public class JdbcAccountsDAO implements AccountsDAO {
         int accountId = jdbcTemplate.queryForObject(sql, Integer.class, userId);
         return accountId;
     }
-
 
 
 }

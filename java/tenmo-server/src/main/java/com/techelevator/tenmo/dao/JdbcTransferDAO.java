@@ -35,6 +35,7 @@ public class JdbcTransferDAO implements TransferDao {
         }
         return account;
     }
+
     //SQL string to credit and update account balances
     private void creditBalance(Account account, int accountToUserId, BigDecimal transferAmount) {
         String sql = "UPDATE accounts " +
@@ -43,6 +44,7 @@ public class JdbcTransferDAO implements TransferDao {
         jdbcTemplate.update(sql, transferAmount, account.getUserId());
 
     }
+
     //SQL string to debit and update account balances not sure why sender account balance is not updating
     private void debitBalance(int accountFrom, BigDecimal transferAmount) {
         String sql = "UPDATE accounts " +
@@ -51,27 +53,28 @@ public class JdbcTransferDAO implements TransferDao {
         jdbcTemplate.update(sql, accountFrom, transferAmount);
 
     }
-    //Inserts transfer into transfer table and calls debit and credit methods
+
     @Override
     public void createNewTransfer(Transfer transfer, String fromUsername) {
-        int accountFrom = userDAO.findIdByUsername(fromUsername);
-        int accountId = accountsDAO.getAccountId(accountFrom);
+        int userId = userDAO.findIdByUsername(fromUsername);
+        int accountId = accountsDAO.getAccountId(userId);
         BigDecimal transferAmount = transfer.getTransferAmount();
-        BigDecimal accountBalance = accountsDAO.getAccountBalance(transfer.getAccountFrom());
+        BigDecimal accountBalance = accountsDAO.getAccountBalance(userId);
         int accountToUserId = transfer.getUserTo();
         int accountToAccountId = accountsDAO.getAccountId(accountToUserId);
         if (accountBalance.compareTo(transferAmount) == 1) {
             String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
-                    "VALUES (1, 2, ?, ?, ?);"; //hard code first two if need to
+                    "VALUES (1, 2, ?, ?, ?);";
             jdbcTemplate.update(sql, accountId, accountToAccountId, transfer.getTransferAmount());
             creditBalance(getAccountByUserId(transfer.getUserTo()), accountToUserId, transferAmount); //
             debitBalance(transfer.getAccountFrom(), transferAmount);
 
         }
     }
+
     // #5 see all transfers ive sent or received
     @Override
-    public List<Transfer> listMyTransfers(int loggedInUserId){
+    public List<Transfer> listMyTransfers(int loggedInUserId) {
         List<Transfer> transfers = new ArrayList<>();
         String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount " +
                 "FROM transfers " +
@@ -93,7 +96,7 @@ public class JdbcTransferDAO implements TransferDao {
                 "FROM transfers " +
                 "WHERE transfer_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
-        if(results.next()) {
+        if (results.next()) {
             transferDetails = mapRowToViewTransferDetails(results);
         }
         return transferDetails;
@@ -118,6 +121,7 @@ public class JdbcTransferDAO implements TransferDao {
         transfer.setTransferAmount(rs.getBigDecimal("amount"));
         return transfer;
     }
+
     private Transfer mapRowToViewTransferDetails(SqlRowSet rs) {
         Transfer transfer = new Transfer();
         transfer.setTransferId(rs.getInt("transfer_id"));
@@ -128,5 +132,10 @@ public class JdbcTransferDAO implements TransferDao {
         transfer.setTransferAmount(rs.getBigDecimal("amount"));
         return transfer;
     }
+
+
+//client should just create a request
+
+
 }
 

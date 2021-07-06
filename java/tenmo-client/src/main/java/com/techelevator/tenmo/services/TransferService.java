@@ -17,7 +17,7 @@ public class TransferService extends BaseService {
     private String baseUrl;
     private RestTemplate restTemplate = new RestTemplate();
 
-    public TransferService(String url){
+    public TransferService(String url) {
         this.baseUrl = url;
     }
 
@@ -34,15 +34,18 @@ public class TransferService extends BaseService {
         return transfers;
 
     }
-    //request to create new transfer
+
+
+    //request to create/update new transfer
     public Transfer createNewTransfer(int userTo, BigDecimal transferAmount, String token) {
         Transfer transfer = new Transfer(userTo, transferAmount);
-        try{
+        try {
             transfer = restTemplate.exchange(baseUrl + "account/transfer", HttpMethod.PUT, makeTransferEntity(token, transfer), Transfer.class).getBody();
         } catch (Exception ex) {
             System.out.println("Cannot make new transfer.");
             return null;
-        } return transfer;
+        }
+        return transfer;
     }
 
     private HttpEntity makeTransferEntity(String token, Transfer transfer) {
@@ -52,5 +55,6 @@ public class TransferService extends BaseService {
         HttpEntity entity = new HttpEntity(transfer, headers);
         return entity;
     }
+
 
 }

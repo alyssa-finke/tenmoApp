@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface UserDao {
 
+    List<User> findAll();
 
     User findByUsername(String username);
 
@@ -14,4 +15,6 @@ public interface UserDao {
     boolean create(String username, String password);
 
     List<User> findAllUsersTransfer();
+
 }
+

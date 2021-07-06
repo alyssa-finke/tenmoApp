@@ -30,6 +30,7 @@ public class AccountsService extends BaseService {
         }
         return balance;
     }
+
     //request to get list of all users
     public User[] findAllUsersTransfer(String token) {
         User[] users = null;

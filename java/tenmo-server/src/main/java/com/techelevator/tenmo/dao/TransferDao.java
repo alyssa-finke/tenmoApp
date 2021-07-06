@@ -17,9 +17,4 @@ public interface TransferDao {
     Transfer viewTransferDetails(int id);
 
 
-
-
-
-
-
 }

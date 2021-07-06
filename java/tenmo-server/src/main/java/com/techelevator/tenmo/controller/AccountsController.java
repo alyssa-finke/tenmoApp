@@ -19,7 +19,7 @@ public class AccountsController {
     private AccountsDAO accountsDAO;
     private TransferDao transferDao;
 
-    public AccountsController(AccountsDAO accountDAO, UserDao userDAO, TransferDao transferDao){
+    public AccountsController(AccountsDAO accountDAO, UserDao userDAO, TransferDao transferDao) {
         this.accountsDAO = accountDAO;
         this.userDAO = userDAO;
         this.transferDao = transferDao;
