@@ -50,7 +50,7 @@ public class JdbcTransferDAO implements TransferDao {
         String sql = "UPDATE accounts " +
                 "SET balance = balance - ?" +
                 "WHERE account_id = ?;";
-        jdbcTemplate.update(sql, accountFrom, transferAmount);
+        jdbcTemplate.update(sql, transferAmount, accountFrom);
 
     }
 
@@ -67,7 +67,7 @@ public class JdbcTransferDAO implements TransferDao {
                     "VALUES (1, 2, ?, ?, ?);";
             jdbcTemplate.update(sql, accountId, accountToAccountId, transfer.getTransferAmount());
             creditBalance(getAccountByUserId(transfer.getUserTo()), accountToUserId, transferAmount); //
-            debitBalance(transfer.getAccountFrom(), transferAmount);
+            debitBalance(accountId, transferAmount);
 
         }
     }
