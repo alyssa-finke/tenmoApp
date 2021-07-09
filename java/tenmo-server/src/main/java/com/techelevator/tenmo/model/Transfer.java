@@ -10,6 +10,9 @@ public class Transfer {
     private int userTo;
     private int accountTo;
     private BigDecimal transferAmount;
+    //made these and made getters and setters
+    private String fromUsername;
+    private String toUsername;
 
     //made this constructor when initializing Transfer in Accounts. Is this okay?
     public Transfer() {
@@ -69,5 +72,21 @@ public class Transfer {
 
     public void setTransferAmount(BigDecimal transferAmount) {
         this.transferAmount = transferAmount;
+    }
+
+    public String getFromUsername() {
+        return fromUsername;
+    }
+
+    public void setFromUsername(String fromUsername) {
+        this.fromUsername = fromUsername;
+    }
+
+    public String getToUsername() {
+        return toUsername;
+    }
+
+    public void setToUsername(String toUsername) {
+        this.toUsername = toUsername;
     }
 }

@@ -12,14 +12,18 @@ public class Transfer {
     private int accountFrom;
     private int userTo;
     private BigDecimal transferAmount;
+    private String fromUsername;
+    private String toUsername;
 
-    public Transfer(int transferId, int transferType, int transferStatus, int accountFrom, int accountTo, BigDecimal transferAmount) {
+    public Transfer(int transferId, int transferType, int transferStatus, int accountFrom, int accountTo, BigDecimal transferAmount, String fromUsername, String toUsername) {
         this.transferId = transferId;
         this.transferType = transferType;
         this.transferStatus = transferStatus;
         this.accountFrom = accountFrom;
         this.userTo = userTo;
         this.transferAmount = transferAmount;
+        this.fromUsername = fromUsername;
+        this.toUsername = toUsername;
     }
 
     public Transfer() {
@@ -79,6 +83,14 @@ public class Transfer {
 
     public void setTransferAmount(BigDecimal transferAmount) {
         this.transferAmount = transferAmount;
+    }
+
+    public String getFromUsername() {
+        return fromUsername;
+    }
+
+    public String getToUsername() {
+        return toUsername;
     }
 }
 

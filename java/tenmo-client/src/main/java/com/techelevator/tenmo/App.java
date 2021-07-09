@@ -87,14 +87,15 @@ public class App {
     private void viewTransferHistory() {
         //can retrieve info with account ids still working on formatting
         System.out.println("--------------------------------------------");
-        System.out.println("Transfer : From : To : Amount");
-        System.out.println("ID : ");
+        System.out.println("Transfer     From     To     Amount");
+        System.out.println("ID  ");
         System.out.println("--------------------------------------------");
         for (Transfer transfer : transferService.listAllTransfers(currentUser.getToken())) {
-            System.out.println(transfer.getTransferId() + " : " + transfer.getAccountFrom() + " : " + transfer.getUserTo() + " : " + transfer.getTransferAmount());
+          System.out.println(transfer.getTransferId() + "       " + transfer.getFromUsername() + "     " + transfer.getToUsername() + "     " + "$" + transfer.getTransferAmount());
+            //added fromUsername and toUsername and getters to Transfer Class.
+            }
         }
 
-    }
 
     private void viewCurrentBalance() {
         // TODO Auto-generated method stub
