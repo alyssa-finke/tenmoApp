@@ -45,7 +45,7 @@ public class TransferController {
     public List<Transfer> listMyTransfers(Principal p) {
         String loggedInUserName = p.getName();
         int loggedInUserId = userDao.findIdByUsername(loggedInUserName);
-        return transferDao.listMyTransfers(loggedInUserId);
+        return transferDao.listMyTransfers((loggedInUserId));
     }
 
 
@@ -58,7 +58,5 @@ public class TransferController {
     }
 
 }
-
-
 
 

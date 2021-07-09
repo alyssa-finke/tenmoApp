@@ -48,7 +48,7 @@ public class JdbcTransferDAO implements TransferDao {
     //SQL string to debit and update account balances not sure why sender account balance is not updating
     private void debitBalance(int accountFrom, BigDecimal transferAmount) {
         String sql = "UPDATE accounts " +
-                "SET balance = balance - ?" +
+                "SET balance = balance - ? " +
                 "WHERE account_id = ?;";
         jdbcTemplate.update(sql, accountFrom, transferAmount);
 
@@ -73,7 +73,7 @@ public class JdbcTransferDAO implements TransferDao {
     }
 
     // #5 see all transfers ive sent or received
-    @Override
+  /*  @Override
     public List<Transfer> listMyTransfers(int loggedInUserId) {
         List<Transfer> transfers = new ArrayList<>();
         String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount " +
@@ -81,6 +81,24 @@ public class JdbcTransferDAO implements TransferDao {
                 "JOIN accounts ON transfers.account_from = accounts.account_id " +
                 "WHERE user_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, loggedInUserId);
+        while (results.next()) {
+            Transfer transfer = mapRowToListMyTransfers(results);
+            transfers.add(transfer);
+        }
+        return transfers;
+    } */
+
+    @Override //did double join and added username x 2 to map below
+    public List<Transfer> listMyTransfers(int loggedInUserId) {
+        List<Transfer> transfers = new ArrayList<>();
+        String sql = "SELECT uf.username AS userfrom, ut.username AS userto, transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount " +
+                "FROM transfers " +
+                "INNER JOIN accounts AS accf ON account_from = accf.account_id " +
+                "INNER JOIN accounts AS acct ON account_to = acct.account_id " +
+                "INNER JOIN users AS uf ON accf.user_id = uf.user_id " +
+                "INNER JOIN users AS ut ON acct.user_id = ut.user_id " +
+                "WHERE accf.user_id = ? OR acct.user_id = ?;"; //question marks correct to do here?
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, loggedInUserId, loggedInUserId); //had to add this extra param because 2 question marks
         while (results.next()) {
             Transfer transfer = mapRowToListMyTransfers(results);
             transfers.add(transfer);
@@ -103,6 +121,7 @@ public class JdbcTransferDAO implements TransferDao {
     }
 
 
+
     private Account mapRowToAccount(SqlRowSet rs) {
         Account account = new Account();
         account.setAccountId(rs.getInt("account_id"));
@@ -113,11 +132,15 @@ public class JdbcTransferDAO implements TransferDao {
 
     private Transfer mapRowToListMyTransfers(SqlRowSet rs) {
         Transfer transfer = new Transfer();
+        //added these to the map, using alias from above
+        transfer.setFromUsername(rs.getString("userfrom"));
+        transfer.setToUsername(rs.getString("userto"));
         transfer.setTransferId(rs.getInt("transfer_id"));
         transfer.setTransferType(rs.getInt("transfer_type_id"));
         transfer.setTransferStatus(rs.getInt("transfer_status_id"));
         transfer.setAccountFrom(rs.getInt("account_from"));
         transfer.setAccountTo(rs.getInt("account_to"));
+        transfer.setUserTo(rs.getInt("account_to"));
         transfer.setTransferAmount(rs.getBigDecimal("amount"));
         return transfer;
     }
@@ -134,8 +157,17 @@ public class JdbcTransferDAO implements TransferDao {
     }
 
 
-//client should just create a request
 
 
 }
+
+/*
+can write a bigger sequel joining to all tables
+transfers to users
+joining out to all the data tables
+
+
+
+ */
+
 
